@@ -19,7 +19,6 @@ def clean_smard_erzeugung(filepath: str):
             .str.replace(",", ".", regex=False)
         )
         df[col] = pd.to_numeric(df[col], errors="coerce") 
-
     #Numbers in the thousands use "." (e.x. 1.000,50) -> initial "." dropped, "," replaced with new "." for decimals
 
     df["Kernenergie [MWh]"] = df["Kernenergie [MWh]"].fillna(0)
@@ -42,5 +41,10 @@ def clean_smard_erzeugung(filepath: str):
     df = df.drop(columns=["Datum bis"])
     #2 columns with dates -> "from" and "until" (beginning and end of the month)
     #Start of the month will be kept. Column with end date dropped
+
+    cols = ["Datum von", "Jahr", "Monat"] + [col for col in df.columns if col not in ["Datum von", "Jahr", "Monat"]]
+    df = df[cols].round(2)
+    #New Columns are moved to the front
+    #All values are rounded to 2 decimals
 
     return df
