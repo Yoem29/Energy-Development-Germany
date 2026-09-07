@@ -25,6 +25,11 @@ def clean_smard_erzeugung(filepath: str):
     #Germany stopped using nuclear energy after 15.04.2023 which is why SMARD uses "-" to label the months after.
     #To keep it numeric, "-" labeled as "na-Value" (see above) and replaced with "0" here
 
+    for col in energy_columns:
+        twh_col = col.replace("[MWh]", "[TWh]")
+        df[twh_col] = df[col] / 1_000_000
+    #for visualization purposes later on, energy columns get duplicated with [TWh] instead of [MWh]
+
     df["Datum von"] = pd.to_datetime(df["Datum von"], format="%d.%m.%Y")
     df["Jahr"] = df["Datum von"].dt.year
     #New column for year only
@@ -43,8 +48,7 @@ def clean_smard_erzeugung(filepath: str):
     #Start of the month will be kept. Column with end date dropped
 
     cols = ["Datum von", "Jahr", "Monat"] + [col for col in df.columns if col not in ["Datum von", "Jahr", "Monat"]]
-    df = df[cols].round(2)
+    df = df[cols]
     #New Columns are moved to the front
-    #All values are rounded to 2 decimals
 
     return df
