@@ -8,6 +8,8 @@ Beginner data science portfolio project analyzing Germany's electricity generati
 
 The owner is learning data science — explain changes briefly, prefer plain pandas/matplotlib solutions, and do not rewrite the interpretive markdown text in notebooks unless asked.
 
+The owner works mainly in VS Code: whenever giving git/GitHub instructions or terminal commands, also describe the VS Code way (Source Control panel, Command Palette, status bar branch picker, GitHub Pull Requests extension).
+
 ## Running
 
 There is no build, lint, or test setup. Dependencies: pandas, matplotlib, jupyter (the README references `requirements.txt`, which does not exist yet).
