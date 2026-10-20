@@ -69,6 +69,10 @@ The transition toward renewable energy is a central topic in Germany's energy po
 - Jupyter Notebooks
 - Streamlit *(planned)*
 
+## AI Assistance
+
+Parts of the code in this project were developed with [Claude Code](https://claude.com/claude-code), an AI coding assistant. Data selection, research questions, interpretation of results and conclusions are my own. AI-assisted commits are marked with a `Co-Authored-By: Claude` line in the git history.
+
 ## Setup
 
 ```bash
