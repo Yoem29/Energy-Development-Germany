@@ -1,11 +1,11 @@
 import pandas as pd
 
-MONATE_REIHENFOLGE = [
-    "Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "Oktober", "November", "Dezember"
+MONTH_ORDER = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
 ]
 
 def load_data(filepath: str):
     df = pd.read_csv(filepath)
-    df["Monat"] = pd.Categorical(df["Monat"], categories=MONATE_REIHENFOLGE, ordered=True)
+    df["Month"] = pd.Categorical(df["Month"], categories=MONTH_ORDER, ordered=True)
     return df
