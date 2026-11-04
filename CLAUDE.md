@@ -37,7 +37,7 @@ Notebooks live in `notebooks/` and use relative paths (`../data/...`, `sys.path.
 
 - `app.py` is the entry point: it adds `src/` to `sys.path`, sets the page config, defines the pages with `st.navigation` (files in `views/`) and renders the shared sidebar footer. Pages in `views/` therefore don't set up paths or page config themselves.
 - `src/dashboard_data.py` (plain pandas) loads the raw API data via `clean_smard_api()`, renames columns to plain source names in TWh and adds `Renewable`, `Conventional`, `Total`. `complete_years()` keeps only years with 12 published months, so new years appear automatically. `yearly()` adds the share columns.
-- `src/dashboard_charts.py` builds all Plotly figures; colors and events come from `config.py` (`ENERGY_COLORS`, `GROUP_COLORS`, `EVENTS`, `EVENT_YEARS`).
+- `src/dashboard_charts.py` builds all Plotly figures; colors and events come from `config.py` (`ENERGY_COLORS`, `GROUP_COLORS`, `EVENT_COLOR`, `EVENTS`, `EVENT_YEARS`). The colors are chosen for a light background, so `.streamlit/config.toml` fixes the light theme (otherwise Streamlit follows the viewer's dark mode and dark lines become hard to read).
 - `src/dashboard_layout.py` holds the Streamlit-specific shared parts (`get_data()` with `st.cache_data`, sidebar footer).
 - The Key Findings page uses the owner's conclusion texts from the analysis notebook and is fixed to `START_YEAR`–`END_YEAR`; keep it in sync if the notebook conclusion changes.
 

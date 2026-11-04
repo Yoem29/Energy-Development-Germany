@@ -1,0 +1,3 @@
+#Fixed light theme, so the chart colors stay readable for everyone (also with dark mode in the browser/system)
+[theme]
+base = "light"

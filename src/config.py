@@ -65,6 +65,10 @@ ENERGY_COLORS = {
 }
 GROUP_COLORS = {"Renewable": "#2ca02c", "Conventional": "#7f7f7f"}
 
+#Dashboard: color of the highlighted event years (bands) and event lines
+EVENT_COLOR = "#f4a259"
+EVENT_LINE_COLOR = "#d9822b"
+
 #Dashboard: events marked in the charts
 EVENTS = [
     ("2020-03-01", "Corona pandemic"),

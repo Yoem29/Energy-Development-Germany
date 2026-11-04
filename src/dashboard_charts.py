@@ -2,9 +2,11 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-from config import ENERGY_COLORS, GROUP_COLORS, EVENTS, EVENT_YEARS
+from config import ENERGY_COLORS, GROUP_COLORS, EVENTS, EVENT_YEARS, EVENT_COLOR, EVENT_LINE_COLOR
 
 COLORS = {**ENERGY_COLORS, **GROUP_COLORS, "Coal": "#5c3d2e"}
+LINE_WIDTH = 3
+LABEL_FONT = dict(size=11, color="#444444")
 
 
 def color_for(name):
@@ -18,17 +20,17 @@ def add_events(fig, x_is_year: bool, x_min=None, x_max=None):
         for i, (year, label) in enumerate(EVENT_YEARS.items()):
             if x_min is not None and not (x_min <= year <= x_max):
                 continue
-            fig.add_vrect(x0=year - 0.45, x1=year + 0.45, fillcolor="grey", opacity=0.12, line_width=0)
+            fig.add_vrect(x0=year - 0.45, x1=year + 0.45, fillcolor=EVENT_COLOR, opacity=0.22, line_width=0, layer="below")
             fig.add_annotation(x=year, y=1 + (i % 2) * 0.07, yref="paper", text=label, showarrow=False,
-                               yanchor="bottom", font_size=11)
+                               yanchor="bottom", font=LABEL_FONT)
     else:
         for i, (date, label) in enumerate(EVENTS):
             date = pd.Timestamp(date)
             if x_min is not None and not (x_min <= date <= x_max):
                 continue
-            fig.add_vline(x=date, line_dash="dot", line_color="grey")
+            fig.add_vline(x=date, line_dash="dot", line_color=EVENT_LINE_COLOR, line_width=2)
             fig.add_annotation(x=date, y=1 + (i % 2) * 0.07, yref="paper", text=label, showarrow=False,
-                               xanchor="left", yanchor="bottom", font_size=11)
+                               xanchor="left", yanchor="bottom", font=LABEL_FONT)
     #Labels alternate in height, so events close to each other don't overlap
     return fig
 
@@ -37,7 +39,7 @@ def line_chart(df, columns, title, y_label="Energy production [TWh]", x_is_year=
     fig = go.Figure()
     for col in columns:
         fig.add_trace(go.Scatter(x=df.index, y=df[col], name=col, mode="lines+markers" if x_is_year else "lines",
-                                 line_color=color_for(col)))
+                                 line=dict(color=color_for(col), width=LINE_WIDTH), marker_size=7))
     if events:
         add_events(fig, x_is_year, df.index.min(), df.index.max())
     fig.update_layout(title=title, yaxis_title=y_label, hovermode="x unified", margin_t=110)
@@ -49,7 +51,7 @@ def line_chart(df, columns, title, y_label="Energy production [TWh]", x_is_year=
 def stacked_area_chart(df, columns, title, y_label="Energy production [TWh]", x_is_year=True):
     fig = go.Figure()
     for col in columns:
-        fig.add_trace(go.Scatter(x=df.index, y=df[col], name=col, stackgroup="one", line_color=color_for(col)))
+        fig.add_trace(go.Scatter(x=df.index, y=df[col], name=col, stackgroup="one", line=dict(color=color_for(col), width=LINE_WIDTH)))
     add_events(fig, x_is_year, df.index.min(), df.index.max())
     fig.update_layout(title=title, yaxis_title=y_label, hovermode="x unified", margin_t=110)
     if x_is_year:
