@@ -1,6 +1,6 @@
 # Energy Development Germany 2015–2025
 
-> 🚧 Data pipeline, analysis and dashboard are complete. The public deployment of the dashboard follows soon.
+> 📊 **Live dashboard:** [energy-development-germany.streamlit.app](https://energy-development-germany.streamlit.app/)
 
 Showcase project analyzing the development of Germany's electricity production between 2015 and 2025, based on official data from SMARD (Bundesnetzagentur).
 
@@ -10,7 +10,7 @@ Showcase project analyzing the development of Germany's electricity production b
 - ✅ Data cleaning
 - ✅ Exploratory Data Analysis (EDA)
 - ✅ Analysis of all three research questions
-- ✅ Interactive dashboard (Streamlit)
+- ✅ Interactive dashboard (Streamlit), deployed on Streamlit Community Cloud
 
 ## Motivation
 
@@ -74,6 +74,8 @@ Full analysis and charts: [`notebooks/Analysis.ipynb`](notebooks/Analysis.ipynb)
 4. **Outlook 2025:** For 2025, coal has its lowest share in the observed period of only 21.8%. The share of renewable energy is still increasing, but the growth has slowed down.
 
 ## Dashboard
+
+**Live:** [energy-development-germany.streamlit.app](https://energy-development-germany.streamlit.app/)
 
 The interactive dashboard has three pages:
 
