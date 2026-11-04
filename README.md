@@ -1,6 +1,6 @@
 # Energy Development Germany 2015–2025
 
-> 🚧 This project is currently in progress. This README will be updated as the project develops.
+> 🚧 Data pipeline and analysis are complete. The interactive Streamlit dashboard is currently in progress.
 
 Showcase project analyzing the development of Germany's electricity production between 2015 and 2025, based on official data from SMARD (Bundesnetzagentur).
 
@@ -9,7 +9,7 @@ Showcase project analyzing the development of Germany's electricity production b
 - ✅ Automated data retrieval via the SMARD API
 - ✅ Data cleaning
 - ✅ Exploratory Data Analysis (EDA)
-- 🔄 Analysis (in progress)
+- ✅ Analysis of all three research questions
 - ⬜ Dashboard (planned, via Streamlit)
 
 ## Motivation
@@ -61,12 +61,19 @@ The transition toward renewable energy is a central topic in Germany's energy po
 
 ## Key Findings
 
-*To be added once the analysis is complete.*
+Full analysis and charts: [`notebooks/Analysis.ipynb`](notebooks/Analysis.ipynb)
+
+1. **Renewable vs Conventional:** Renewable energy is the rising producer over the years. It overtook conventional energy in 2023 right around the time of the nuclear phase-out. In 2015, the share of renewable energy was at 33.8%. In 2025, the share was at 58.9%.
+2. **Nuclear phase-out:** The loss of nuclear energy after the phase-out was compensated through onshore wind and natural gas. The total energy production was still lower because the production through coal decreased as well. Imports are not included in the data set. But according to [Fraunhofer ISE](https://www.ise.fraunhofer.de/de/presse-und-medien/presseinformationen/2024/oeffentliche-stromerzeugung-2023-erneuerbare-energien-decken-erstmals-grossteil-des-stromverbrauchs.html), imports have increased at that time which might explain the gap.
+3. **Energy crisis & coal:** Energy from coal had a temporary increase from 2021 onwards with a peak in 2022 in which it had a share of 33.3% of the total energy production. In 2021, renewable energy had a weak year and the recovery from the corona pandemic also began. Even though the rise of coal peaked in 2022, renewable energy still had a greater growth in that year.
+4. **Outlook 2025:** For 2025, coal has its lowest share in the observed period of only 21.8%. The share of renewable energy is still increasing, but the growth has slowed down.
 
 ## Limitations
 
 - The dataset covers only public grid generation (see "Data Source" above) — industrial self-consumption is not included.
 - The time range was deliberately limited to 2015–2025 to ensure consistent data quality; earlier events (e.g. Fukushima, 2011) fall outside this window.
+- Electricity imports and exports are not part of the data. Changes in total generation (e.g. after the nuclear phase-out) can therefore only be partially explained with this dataset.
+- The SMARD API is not officially documented and could change. The API data was validated against a manual SMARD export (identical for 2015–2025), which is kept in `data/raw/` as a fallback.
 - Pumped storage is classified under "conventional" energy for simplicity, even though it is technically a storage rather than a generation technology.
 
 ## Tech Stack
