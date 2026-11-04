@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Beginner data science portfolio project analyzing Germany's electricity generation 2015–2025 from SMARD (Bundesnetzagentur) monthly data. Three research questions drive the analysis (see README): renewable vs. conventional development, impact of the nuclear phase-out (April 2023), and the coal rise during the 2022 energy crisis. Data is fetched from the SMARD API. A Streamlit dashboard is planned but not started.
+Beginner data science portfolio project analyzing Germany's electricity generation 2015–2025 from SMARD (Bundesnetzagentur) monthly data. Three research questions drive the analysis (see README): renewable vs. conventional development, impact of the nuclear phase-out (April 2023), and the coal rise during the 2022 energy crisis. Data is fetched from the SMARD API and shown in a Streamlit dashboard.
 
 The owner is learning data science — explain changes briefly, prefer plain pandas/matplotlib solutions, and do not rewrite the interpretive markdown text in notebooks unless asked.
 
@@ -21,6 +21,8 @@ python src/fetch_smard_data.py   # SMARD API -> data/raw/smard_generation_monthl
 python src/clean_smard_data.py   # -> data/processed/energy_generation_clean.csv (2015-2025 only)
 ```
 
+Run the dashboard with `streamlit run app.py` (from the repo root).
+
 Notebooks live in `notebooks/` and use relative paths (`../data/...`, `sys.path.append("../src")`), so they must be run with `notebooks/` as the working directory. Modules in `src/` import each other by plain module name (`from config import ...`), which works both from the notebooks and when running the scripts directly.
 
 ## Data pipeline
@@ -30,6 +32,14 @@ Notebooks live in `notebooks/` and use relative paths (`../data/...`, `sys.path.
 3. `src/clean_smard_data.py::clean_smard_export()` cleans the manual csv export (`data/raw/Realisierte_Erzeugung_..._Monat.csv`, kept unmodified as reference): `;` separator, German number format, `"-"` as NaN, strips `Berechnete Auflösungen`, translates German column names via `EXPORT_TRANSLATION` (unknown columns print a warning). Both cleaners share `add_derived_columns()` (`[TWh]` copies, `Year`, `Month`) and produce identical output.
 4. `notebooks/EDA.ipynb` walks through the manual export and, in section 3, validates the API data against it (difference is 0 for 2015–2025).
 5. `notebooks/Analysis.ipynb` reads the processed CSV via `src/load_processed_data.py::load_data()`, which restores `Month` as an ordered categorical (CSV round-trips lose the ordering, so plots would otherwise sort months alphabetically).
+
+## Dashboard
+
+- `app.py` is the entry point: it adds `src/` to `sys.path`, sets the page config, defines the pages with `st.navigation` (files in `views/`) and renders the shared sidebar footer. Pages in `views/` therefore don't set up paths or page config themselves.
+- `src/dashboard_data.py` (plain pandas) loads the raw API data via `clean_smard_api()`, renames columns to plain source names in TWh and adds `Renewable`, `Conventional`, `Total`. `complete_years()` keeps only years with 12 published months, so new years appear automatically. `yearly()` adds the share columns.
+- `src/dashboard_charts.py` builds all Plotly figures; colors and events come from `config.py` (`ENERGY_COLORS`, `GROUP_COLORS`, `EVENT_COLOR`, `EVENTS`, `EVENT_YEARS`). The colors are chosen for a light background, so `.streamlit/config.toml` fixes the light theme (otherwise Streamlit follows the viewer's dark mode and dark lines become hard to read).
+- `src/dashboard_layout.py` holds the Streamlit-specific shared parts (`get_data()` with `st.cache_data`, sidebar footer).
+- The Key Findings page uses the owner's conclusion texts from the analysis notebook and is fixed to `START_YEAR`–`END_YEAR`; keep it in sync if the notebook conclusion changes.
 
 ## Conventions
 

@@ -47,3 +47,39 @@ EXPORT_TRANSLATION = {
 #Observation period of the analysis. The API delivers more data, but only complete years in this range are processed
 START_YEAR = 2015
 END_YEAR = 2025
+
+#Dashboard: fixed colors, so every energy source looks the same in all charts
+ENERGY_COLORS = {
+    "Biomass": "#6a994e",
+    "Hydropower": "#1f77b4",
+    "Wind Offshore": "#08306b",
+    "Wind Onshore": "#6baed6",
+    "Photovoltaics": "#f2b705",
+    "Other Renewables": "#b5d99c",
+    "Nuclear": "#9467bd",
+    "Lignite": "#8c564b",
+    "Hard Coal": "#3d3d3d",
+    "Natural Gas": "#ff7f0e",
+    "Pumped Storage": "#17becf",
+    "Other Conventional": "#bdbdbd",
+}
+GROUP_COLORS = {"Renewable": "#2ca02c", "Conventional": "#7f7f7f"}
+
+#Dashboard: color of the highlighted event years (bands) and event lines
+EVENT_COLOR = "#f4a259"
+EVENT_LINE_COLOR = "#d9822b"
+
+#Dashboard: events marked in the charts
+EVENTS = [
+    ("2020-03-01", "Corona pandemic"),
+    ("2020-08-01", "Coal phase-out law"),
+    ("2022-01-01", "3 nuclear reactors shut down"),
+    ("2022-02-24", "Energy crisis (Russia-Ukraine war)"),
+    ("2023-04-15", "Nuclear phase-out"),
+]
+#Monthly charts use the exact dates above. Yearly charts highlight the whole year instead
+EVENT_YEARS = {
+    2020: "Corona & coal phase-out law",
+    2022: "Energy crisis",
+    2023: "Nuclear phase-out",
+}

@@ -1,6 +1,6 @@
 # Energy Development Germany 2015–2025
 
-> 🚧 Data pipeline and analysis are complete. The interactive Streamlit dashboard is currently in progress.
+> 🚧 Data pipeline, analysis and dashboard are complete. The public deployment of the dashboard follows soon.
 
 Showcase project analyzing the development of Germany's electricity production between 2015 and 2025, based on official data from SMARD (Bundesnetzagentur).
 
@@ -10,7 +10,7 @@ Showcase project analyzing the development of Germany's electricity production b
 - ✅ Data cleaning
 - ✅ Exploratory Data Analysis (EDA)
 - ✅ Analysis of all three research questions
-- ⬜ Dashboard (planned, via Streamlit)
+- ✅ Interactive dashboard (Streamlit)
 
 ## Motivation
 
@@ -39,6 +39,8 @@ The transition toward renewable energy is a central topic in Germany's energy po
 ├── data/
 │   ├── raw/            # SMARD data from the API + original manual export (reference)
 │   └── processed/       # Cleaned data, ready for analysis
+├── app.py               # Entry point of the Streamlit dashboard
+├── views/               # Dashboard pages: overview, explorer, key findings
 ├── notebooks/
 │   ├── EDA.ipynb         # Data cleaning walkthrough, API validation and first insights
 │   └── Analysis.ipynb    # In-depth analysis of the research questions
@@ -46,7 +48,10 @@ The transition toward renewable energy is a central topic in Germany's energy po
 │   ├── config.py               # Energy sources, SMARD filter IDs, column names, observation period
 │   ├── fetch_smard_data.py     # Downloads the monthly generation data from the SMARD API
 │   ├── clean_smard_data.py     # Cleaning logic for API data and manual SMARD exports
-│   └── load_processed_data.py  # Helper to load processed data with correct month ordering
+│   ├── load_processed_data.py  # Helper to load processed data with correct month ordering
+│   ├── dashboard_data.py       # Data preparation for the dashboard
+│   ├── dashboard_charts.py     # Plotly charts for the dashboard
+│   └── dashboard_layout.py     # Shared Streamlit parts (cached data, sidebar)
 ├── requirements.txt
 └── .gitignore
 ```
@@ -57,7 +62,7 @@ The transition toward renewable energy is a central topic in Germany's energy po
 1. **Cleaning** – Raw SMARD data (German number format, missing-value placeholders, German column names) is transformed into a consistent, analysis-ready dataset with English column names.
 2. **EDA** – Initial exploration of the cleaned data: data types, value ranges, and first visible patterns (e.g. the nuclear phase-out showing up as a structural break).
 3. **Analysis** – Each research question is examined individually, combining yearly trends with monthly detail where relevant.
-4. **Dashboard** *(planned)* – An interactive Streamlit dashboard to explore the data and findings.
+4. **Dashboard** – An interactive Streamlit dashboard to explore the data and the key findings (see below).
 
 ## Key Findings
 
@@ -67,6 +72,22 @@ Full analysis and charts: [`notebooks/Analysis.ipynb`](notebooks/Analysis.ipynb)
 2. **Nuclear phase-out:** The loss of nuclear energy after the phase-out was compensated through onshore wind and natural gas. The total energy production was still lower because the production through coal decreased as well. Imports are not included in the data set. But according to [Fraunhofer ISE](https://www.ise.fraunhofer.de/de/presse-und-medien/presseinformationen/2024/oeffentliche-stromerzeugung-2023-erneuerbare-energien-decken-erstmals-grossteil-des-stromverbrauchs.html), imports have increased at that time which might explain the gap.
 3. **Energy crisis & coal:** Energy from coal had a temporary increase from 2021 onwards with a peak in 2022 in which it had a share of 33.3% of the total energy production. In 2021, renewable energy had a weak year and the recovery from the corona pandemic also began. Even though the rise of coal peaked in 2022, renewable energy still had a greater growth in that year.
 4. **Outlook 2025:** For 2025, coal has its lowest share in the observed period of only 21.8%. The share of renewable energy is still increasing, but the growth has slowed down.
+
+## Dashboard
+
+The interactive dashboard has three pages:
+
+- **Overview** – key figures of the latest complete year and the development of renewable vs. conventional energy
+- **Explorer** – filter by years or months of a year and by energy source; ranking, share and year-to-year comparison
+- **Key Findings** – the answers to the research questions with the supporting charts
+
+Events such as the energy crisis 2022 and the nuclear phase-out are highlighted in the charts. The dashboard reads the data fetched from the SMARD API and only shows complete years, so a new year appears automatically once all of its months are published.
+
+Run it locally (from the project folder):
+
+```bash
+streamlit run app.py
+```
 
 ## Limitations
 
@@ -81,7 +102,7 @@ Full analysis and charts: [`notebooks/Analysis.ipynb`](notebooks/Analysis.ipynb)
 - Python (pandas, matplotlib, requests)
 - SMARD REST API
 - Jupyter Notebooks
-- Streamlit *(planned)*
+- Streamlit & Plotly (dashboard)
 
 ## AI Assistance
 
