@@ -6,6 +6,7 @@ Showcase project analyzing the development of Germany's electricity production b
 
 ## Current Status
 
+- ✅ Automated data retrieval via the SMARD API
 - ✅ Data cleaning
 - ✅ Exploratory Data Analysis (EDA)
 - 🔄 Analysis (in progress)
@@ -24,6 +25,7 @@ The transition toward renewable energy is a central topic in Germany's energy po
 ## Data Source
 
 - **Provider:** [SMARD](https://www.smard.de) (Bundesnetzagentur / German Federal Network Agency)
+- **Access:** Fetched automatically via the public SMARD API (`src/fetch_smard_data.py`). A manual csv export is kept as reference; both datasets were compared and match exactly for 2015–2025 (see EDA notebook, section 3).
 - **Metric:** Realized (net) electricity generation, i.e. electricity actually fed into the public grid
 - **Time range:** 2015–2025
 - **Resolution:** Monthly
@@ -35,20 +37,24 @@ The transition toward renewable energy is a central topic in Germany's energy po
 
 ```
 ├── data/
-│   ├── raw/            # Original SMARD export (unmodified)
+│   ├── raw/            # SMARD data from the API + original manual export (reference)
 │   └── processed/       # Cleaned data, ready for analysis
 ├── notebooks/
-│   ├── EDA.ipynb         # Data cleaning walkthrough and first insights
+│   ├── EDA.ipynb         # Data cleaning walkthrough, API validation and first insights
 │   └── Analysis.ipynb    # In-depth analysis of the research questions
 ├── src/
-│   ├── clean_smard_data.py     # Cleaning logic for SMARD raw exports
+│   ├── config.py               # Energy sources, SMARD filter IDs, column names, observation period
+│   ├── fetch_smard_data.py     # Downloads the monthly generation data from the SMARD API
+│   ├── clean_smard_data.py     # Cleaning logic for API data and manual SMARD exports
 │   └── load_processed_data.py  # Helper to load processed data with correct month ordering
+├── requirements.txt
 └── .gitignore
 ```
 
 ## Methodology
 
-1. **Cleaning** – Raw SMARD export (German number format, missing-value placeholders, inconsistent column names) is transformed into a consistent, analysis-ready dataset.
+0. **Data retrieval** – The monthly generation data of all 12 energy sources is downloaded from the SMARD API and validated against a manual SMARD export.
+1. **Cleaning** – Raw SMARD data (German number format, missing-value placeholders, German column names) is transformed into a consistent, analysis-ready dataset with English column names.
 2. **EDA** – Initial exploration of the cleaned data: data types, value ranges, and first visible patterns (e.g. the nuclear phase-out showing up as a structural break).
 3. **Analysis** – Each research question is examined individually, combining yearly trends with monthly detail where relevant.
 4. **Dashboard** *(planned)* – An interactive Streamlit dashboard to explore the data and findings.
@@ -65,7 +71,8 @@ The transition toward renewable energy is a central topic in Germany's energy po
 
 ## Tech Stack
 
-- Python (pandas, matplotlib)
+- Python (pandas, matplotlib, requests)
+- SMARD REST API
 - Jupyter Notebooks
 - Streamlit *(planned)*
 
@@ -79,6 +86,13 @@ Parts of the code in this project were developed with [Claude Code](https://clau
 git clone https://github.com/Yoem29/Energy-Development-Germany.git
 cd Energy-Development-Germany
 pip install -r requirements.txt
+```
+
+To update the data with the newest months published by SMARD (run from the project folder):
+
+```bash
+python src/fetch_smard_data.py   # downloads the data into data/raw/
+python src/clean_smard_data.py   # creates data/processed/energy_generation_clean.csv
 ```
 
 ## Author
